@@ -42,9 +42,7 @@ jobs:
           images: gitarplayer/ghost-az-ai
           tags: |
             type=semver,pattern={{version}}
-            # set int tag for int branch
             type=raw,value=stage,enable=${{ github.ref == format('refs/heads/{0}', 'stage') }}
-            # set prod tag for prod branch
             type=raw,value=prod,enable=${{ github.ref == format('refs/heads/{0}', 'prod') }}
       
       - name: Build and push Docker image
