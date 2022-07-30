@@ -1,4 +1,4 @@
-FROM ghost:4.10.2-alpine
+FROM ghost:alpine
 
 # Add app-insights globally
 RUN  mkdir /opt/ai && \
