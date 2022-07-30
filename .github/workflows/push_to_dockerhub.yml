@@ -9,17 +9,7 @@
 
 name: Publish Docker image
 
-on:
-  push:
-    branches:
-      - 'master'
-      - 'stage'
-      - 'prod'
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - 'master'
+on: release
 
 jobs:
   push_to_registry:
