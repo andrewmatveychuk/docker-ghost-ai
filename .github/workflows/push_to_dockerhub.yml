@@ -10,8 +10,16 @@
 name: Publish Docker image
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - 'master'
+      - 'stage'
+      - 'prod'
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - 'master'
 
 jobs:
   push_to_registry:
@@ -32,6 +40,12 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: gitarplayer/ghost-az-ai
+        tags: |
+          type=semver,pattern={{version}}
+          # set int tag for int branch
+          type=raw,value=stage,enable=${{ github.ref == format('refs/heads/{0}', 'stage') }}
+          # set prod tag for prod branch
+          type=raw,value=prod,enable=${{ github.ref == format('refs/heads/{0}', 'prod') }}
       
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
