@@ -1,4 +1,4 @@
-FROM ghost:5-alpine AS BUILD
+FROM ghost:5-alpine AS build
 
 RUN apk add --update --no-cache \
     python3 \
@@ -14,7 +14,7 @@ FROM ghost:5-alpine
 
 # Copy the ai-bootstrap.js file
 COPY ai-bootstrap.js /opt/ai/
-COPY --from=BUILD /opt/ai /opt/ai
+COPY --from=build /opt/ai /opt/ai
 
 # Configure AI via ENV VARS
 # ENV APPINSIGHTS_INSTRUMENTATIONKEY xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -24,5 +24,5 @@ COPY --from=BUILD /opt/ai /opt/ai
 ENV NODE_OPTIONS='--require /opt/ai/ai-bootstrap.js'
 
 # Add wait-for-it for better startup handling with external database service (https://docs.docker.com/compose/startup-order/)
-ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for-it.sh
+COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
 RUN chmod +x /usr/local/bin/wait-for-it.sh
