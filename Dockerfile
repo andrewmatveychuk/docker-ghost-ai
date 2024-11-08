@@ -7,8 +7,8 @@ RUN apk add --update --no-cache \
 WORKDIR /opt/ai
 
 RUN npm init -y && \
-        npm install --omit=dev --save applicationinsights && \
-        npm install --omit=dev --save applicationinsights-native-metrics
+    npm install --omit=dev --save applicationinsights && \
+    npm install --omit=dev --save applicationinsights-native-metrics
 
 FROM ghost:5-alpine
 
@@ -18,11 +18,18 @@ COPY --from=build /opt/ai /opt/ai
 
 ENV NODE_OPTIONS='--require /opt/ai/ai-bootstrap.js'
 
+# Add MySQL client to check for database availability
+RUN apk add --update --no-cache \
+    mysql-client
+
 # Add wait-for-it for better startup handling with external database service
-COPY wait-for-it.sh ./wait-for-it.sh
-COPY docker-entrypoint.sh ./docker-entrypoint.sh
+# COPY wait-for-it.sh /usr/local/bin
+# RUN chmod +x /usr/local/bin/wait-for-it.sh
 
-RUN chmod +x ./wait-for-it.sh ./docker-entrypoint.sh
+COPY check-db-connection.sh /usr/local/bin
+# RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT [ "check-db-connection.sh" ]
+
+EXPOSE 2368
 CMD ["node", "current/index.js"]
