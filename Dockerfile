@@ -22,12 +22,8 @@ ENV NODE_OPTIONS='--require /opt/ai/ai-bootstrap.js'
 RUN apk add --update --no-cache \
     mysql-client
 
-# Add wait-for-it for better startup handling with external database service
-# COPY wait-for-it.sh /usr/local/bin
-# RUN chmod +x /usr/local/bin/wait-for-it.sh
-
 COPY check-db-connection.sh /usr/local/bin
-# RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/check-db-connection.sh
 
 ENTRYPOINT [ "check-db-connection.sh" ]
 
