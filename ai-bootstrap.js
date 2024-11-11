@@ -5,16 +5,7 @@ if (connectionString) {
     console.log('Using Application Insights connection string.');
     appInsights.setup(connectionString)
         .enableLiveMetrics(true)
-        .enableWebInstrumentation(true)
-        // .setAutoCollectRequests(true)
-        // .setAutoCollectPerformance(true, true)
-        // .setAutoCollectExceptions(true)
-        // .setAutoCollectDependencies(true)
-        // .setAutoCollectConsole(true, false)
-        // .setAutoCollectPreAggregatedMetrics(true)
-        // .setSendLiveMetrics(false)
-        // .setInternalLogging(false, true)
-        // .enableWebInstrumentation(true)
+        .enableWebInstrumentation(true);
 
     appInsights.start();
 } else {
